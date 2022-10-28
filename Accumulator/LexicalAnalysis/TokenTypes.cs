@@ -1,4 +1,4 @@
-﻿namespace Accumulator.LexicalAnalysis
+﻿namespace SimulatorAcc.LexicalAnalysis
 {
     /// <summary>
     /// Contiene información del tipo token detectado durante el proceso de análisis léxico.

@@ -1,11 +1,11 @@
-﻿namespace Accumulator.LexicalAnalysis
+﻿namespace SimulatorAcc.LexicalAnalysis
 {
     /// <summary>
     /// Unidad de análisis léxico. Contiene información de un token detectado durante el proceso de análisis léxico.
     /// </summary>
     public class Token
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public TokenTypes Type { get; }
         public string Name { get; }
         public string Key { get; }

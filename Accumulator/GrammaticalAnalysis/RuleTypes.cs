@@ -1,4 +1,4 @@
-﻿namespace Accumulator.GrammaticalAnalysis
+﻿namespace SimulatorAcc.GrammaticalAnalysis
 {
     public enum RuleTypes
     {

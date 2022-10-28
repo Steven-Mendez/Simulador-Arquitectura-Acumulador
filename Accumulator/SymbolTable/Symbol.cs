@@ -1,6 +1,6 @@
-﻿using Accumulator.LexicalAnalysis;
+﻿using SimulatorAcc.LexicalAnalysis;
 
-namespace Accumulator.SymbolTable
+namespace SimulatorAcc.SymbolTable
 {
     /// <summary>
     /// Unidad de tabla de símbolos. Contiene información de un literal (nombre de variable o etiqueta) detectado en el código fuente

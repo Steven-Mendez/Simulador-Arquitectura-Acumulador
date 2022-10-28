@@ -1,4 +1,4 @@
-﻿namespace Accumulator.LexicalAnalysis
+﻿namespace SimulatorAcc.LexicalAnalysis
 {
     /// <summary>
     /// Contiene información de un error detectado en el archivo fuente durante el proceso de análisis.

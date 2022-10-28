@@ -1,7 +1,7 @@
-﻿using Accumulator.GrammaticalAnalysis;
-using Accumulator.LexicalAnalysis;
+﻿using SimulatorAcc.GrammaticalAnalysis;
+using SimulatorAcc.LexicalAnalysis;
 
-namespace Accumulator.InstructionAnalysis
+namespace SimulatorAcc.InstructionAnalysis
 {
     /// <summary>
     /// Unidad de programa. Contiene información de una instrucción detectada a partir del análisis gramatical del código fuente.

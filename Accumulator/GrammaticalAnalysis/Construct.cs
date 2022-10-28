@@ -1,9 +1,9 @@
-﻿using Accumulator.LexicalAnalysis;
+﻿using SimulatorAcc.LexicalAnalysis;
 
-namespace Accumulator.GrammaticalAnalysis
+namespace SimulatorAcc.GrammaticalAnalysis
 {
     /// <summary>
-    /// Unidad de tabla de símbolos. Contiene información de un literal (nombre de variable o etiqueta) detectado en el código fuente
+    /// Contains information of a Grammatical Rule match for a line of Source Code.
     /// </summary>
     public class Construct
     {
