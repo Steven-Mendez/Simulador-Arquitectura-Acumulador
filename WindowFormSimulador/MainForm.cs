@@ -51,6 +51,8 @@ namespace WindowFormSimulador
 
             text = "Assembly done successfully.";
             MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            dgvInstrucctions.Focus();
         }
     }
 }
