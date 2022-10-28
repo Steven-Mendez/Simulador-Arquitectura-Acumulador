@@ -42,7 +42,7 @@ namespace WindowFormSimulador
 
             string text, caption = "Result";
 
-            if (errorsCount != 0)
+            if (errorsCount > 0)
             {
                 text = $"Assembled was not entirely successful. {Compiler.LexErrors} lexical errors and {Compiler.ParseErrors} parsing errors were detected.";
                 MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -3,6 +3,7 @@ using SimulatorAcc.InstructionAnalysis;
 using SimulatorAcc.LexicalAnalysis;
 using SimulatorAcc.Memory;
 using SimulatorAcc.SymbolTable;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace SimulatorAcc
@@ -25,6 +26,11 @@ namespace SimulatorAcc
 
         public int PC;
 
+        private char[] charsToTrim = { ' ', '\t', '\n' };
+
+        private Dictionary<string, Token> KeyWords;
+        private Dictionary<string, RuleTypes> ParseRules;
+
         public List<MemoryCell> MemoryCells { get; set; }
 
         public Accumulator(string sourceFile)
@@ -36,16 +42,16 @@ namespace SimulatorAcc
             ProgramConstructs = new List<Construct>();
             SymbolTable = new List<Symbol>();
             Code = new List<Instruction>();
+            KeyWords = new Dictionary<string, Token>();
+            ParseRules = new Dictionary<string, RuleTypes>();
+
+            CreateKeyWords();
+            CreateParsingRules();
         }
 
-        public int AssembleSourceFile()
+        private void CreateKeyWords()
         {
-            char[] charsToTrim = { ' ', '\t', '\n' };
-
             // Directives
-            Dictionary<string, Token> KeyWords = new Dictionary<string, Token>();
-            Dictionary<string, RuleTypes> ParseRules = new Dictionary<string, RuleTypes>();
-
             KeyWords.Add(".DATA", new Token(TokenTypes.DirectivaDato, ".DATA", 100, "D"));
             KeyWords.Add(".CODE", new Token(TokenTypes.DirectivaCódigo, ".CODE", 200, "C"));
 
@@ -66,11 +72,11 @@ namespace SimulatorAcc
             KeyWords.Add("STORE", new Token(TokenTypes.Traslado, "STORE", 9, "S"));
 
             // Jump Operations
-            KeyWords.Add("BR", new Token(TokenTypes.Salto, "BR", 32, "J"));
-            KeyWords.Add("BRZ", new Token(TokenTypes.Salto, "BRZ", 33, "B"));
-            KeyWords.Add("BNZ", new Token(TokenTypes.Salto, "BNZ", 34, "B"));
-            KeyWords.Add("BGT", new Token(TokenTypes.Salto, "BGT", 35, "B"));
-            KeyWords.Add("BLT", new Token(TokenTypes.Salto, "BLT", 36, "B"));
+            //KeyWords.Add("BR", new Token(TokenTypes.Salto, "BR", 32, "J"));
+            //KeyWords.Add("BRZ", new Token(TokenTypes.Salto, "BRZ", 33, "B"));
+            //KeyWords.Add("BNZ", new Token(TokenTypes.Salto, "BNZ", 34, "B"));
+            //KeyWords.Add("BGT", new Token(TokenTypes.Salto, "BGT", 35, "B"));
+            //KeyWords.Add("BLT", new Token(TokenTypes.Salto, "BLT", 36, "B"));
 
             // No Operation
             KeyWords.Add("NOP", new Token(TokenTypes.NOP, "NOP", 126, "N"));
@@ -86,8 +92,11 @@ namespace SimulatorAcc
 
             // Separator
             KeyWords.Add(",", new Token(TokenTypes.Coma, ",", 1, ","));
+        }
 
-            // Parsing Rules
+        private void CreateParsingRules()
+        {
+            ParseRules.Add("LV", RuleTypes.Load_Instrucction);
             ParseRules.Add("D", RuleTypes.DirectivaDato); // Data Directive
             ParseRules.Add("C", RuleTypes.DirectivaCódigo); // Code Directive
             ParseRules.Add("T", RuleTypes.Etiqueta); // Labels
@@ -102,7 +111,10 @@ namespace SimulatorAcc
             ParseRules.Add("BR,T", RuleTypes.Instrucción_B); // Conditional Branch
             ParseRules.Add("N", RuleTypes.Instrucción_N); // NOP
             ParseRules.Add("H", RuleTypes.Instrucción_H); // HALT
+        }
 
+        public int AssembleSourceFile()
+        {
             inputFileContent = File.ReadAllLines(sourceFile);
 
             int lineNumber = 0;
@@ -171,6 +183,7 @@ namespace SimulatorAcc
                     lineParsing.IsOk = false;
                     ProgramConstructs.Add(lineParsing);
                     Errors.Add(new Error(lineNumber, "InvalidRule", ParseKey, $"Line {lineNumber}: Rule {ParseKey} doesn't exist"));
+                    ParseErrors++;
                     continue;
                 }
 
@@ -219,6 +232,46 @@ namespace SimulatorAcc
                             vO2: lineParsing.Tokens[3].Id,
                             tipoO3: lineParsing.Tokens[5].Type,
                             vO3: lineParsing.Tokens[5].Id,
+                            tokens: lineParsing.Tokens
+                            ));
+                        break;
+
+                    // Load Instructions ex: "Load A"
+                    case RuleTypes.Load_Instrucction:
+                        // Verify If The Second Operand is Variable
+                        if (lineParsing.Tokens[1].Type == TokenTypes.Variable)
+                        {
+                            // Search the Variable in the SymbolTable
+                            Symbol? v = SymbolTable.FirstOrDefault(d => d.Name == lineParsing.Tokens[1].Name);
+                            if (v != null)
+                            {
+                                lineParsing.Tokens[1].Id = v.Address;
+                            }
+                            else if (ruleId != RuleTypes.Instrucción_LI)
+                            {
+                                // Error
+                                Errors.Add(new Error(lineNumber, "Undeclared_Variable", ParseKey, $"Line {lineNumber}: Variable {lineParsing.Tokens[1].Name} was not declared"));
+                                ParseErrors++;
+                                result = false;
+                            }
+                        }
+                        Code.Add(new Instruction(
+                            dirección: instructionNumber++,
+                            línea: lineNumber,
+                            instrucción: leanLine,
+                            tipo: lineParsing.RuleType,
+                            operación: lineParsing.Tokens[0].Name,
+                            O1: lineParsing.Tokens[1].Name,
+                            O2: "",
+                            O3: "",
+                            tipoOp: lineParsing.Tokens[0].Type,
+                            IdOp: lineParsing.Tokens[0].Id,
+                            tipoO1: lineParsing.Tokens[1].Type,
+                            vO1: lineParsing.Tokens[1].Id,
+                            tipoO2: TokenTypes.Vacío,
+                            vO2: 0,
+                            tipoO3: TokenTypes.Vacío,
+                            vO3: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
@@ -421,7 +474,7 @@ namespace SimulatorAcc
                 }
             }
 
-            return (ParseErrors + LexErrors);
+            return ParseErrors + LexErrors;
         }
 
         public Token Lexer(string thisWord, int lineNumber, bool isBranchInstruction)

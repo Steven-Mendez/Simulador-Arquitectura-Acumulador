@@ -16,6 +16,7 @@
         Instrucción_B,
         Instrucción_H,
         Instrucción_N,
-        None
+        None,
+        Load_Instrucction
     }
 }
