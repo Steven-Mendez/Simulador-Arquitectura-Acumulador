@@ -3,40 +3,15 @@ using SimulatorAcc.InstructionAnalysis;
 using SimulatorAcc.LexicalAnalysis;
 using SimulatorAcc.Memory;
 using SimulatorAcc.SymbolTable;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace SimulatorAcc
 {
-    public class Accumulator
+    public partial class Accumulator
     {
-        private const char ChrTag = ':';
-        public const char ChrComment = ';';
-
-        private string sourceFile { get; }
-        public List<Error> Errors { get; set; } = new List<Error>();
-        public int LexErrors { get; set; }
-        public List<string> LeanFileContent { get; set; }
-        public List<Construct> ProgramConstructs { get; set; }
-        public List<Symbol> SymbolTable { get; set; }
-        public List<Instruction> Code { get; set; }
-        public string[] inputFileContent { get; set; }
-        public bool result { get; set; }
-        public int ParseErrors { get; set; }
-
-        public int PC;
-
-        private char[] charsToTrim = { ' ', '\t', '\n' };
-
-        private Dictionary<string, Token> KeyWords;
-        private Dictionary<string, RuleTypes> ParseRules;
-
-        public List<MemoryCell> MemoryCells { get; set; }
-
         public Accumulator(string sourceFile)
         {
-            this.sourceFile = sourceFile;
-
+            this.SourceFile = sourceFile;
             LeanFileContent = new List<string>();
             Errors = new List<Error>();
             ProgramConstructs = new List<Construct>();
@@ -44,78 +19,13 @@ namespace SimulatorAcc
             Code = new List<Instruction>();
             KeyWords = new Dictionary<string, Token>();
             ParseRules = new Dictionary<string, RuleTypes>();
-
             CreateKeyWords();
             CreateParsingRules();
         }
 
-        private void CreateKeyWords()
-        {
-            // Directives
-            KeyWords.Add(".DATA", new Token(TokenTypes.DirectivaDato, ".DATA", 100, "D"));
-            KeyWords.Add(".CODE", new Token(TokenTypes.DirectivaCódigo, ".CODE", 200, "C"));
-
-            // Definitions
-            KeyWords.Add("DW", new Token(TokenTypes.Declaración, "DW", 300, "A"));
-
-            // Arithmetic operations
-            KeyWords.Add("ADD", new Token(TokenTypes.Operación, "ADD", 0, "O"));
-            KeyWords.Add("SUB", new Token(TokenTypes.Operación, "SUB", 1, "O"));
-            KeyWords.Add("DIV", new Token(TokenTypes.Operación, "DIV", 2, "O"));
-            KeyWords.Add("MUL", new Token(TokenTypes.Operación, "MUL", 3, "O"));
-
-            // Logic Operation
-            KeyWords.Add("CMP", new Token(TokenTypes.Operación, "CMP", 4, "O"));
-
-            // Transfer Operations
-            KeyWords.Add("LOAD", new Token(TokenTypes.Traslado, "LOAD", 8, "L"));
-            KeyWords.Add("STORE", new Token(TokenTypes.Traslado, "STORE", 9, "S"));
-
-            // Jump Operations
-            //KeyWords.Add("BR", new Token(TokenTypes.Salto, "BR", 32, "J"));
-            //KeyWords.Add("BRZ", new Token(TokenTypes.Salto, "BRZ", 33, "B"));
-            //KeyWords.Add("BNZ", new Token(TokenTypes.Salto, "BNZ", 34, "B"));
-            //KeyWords.Add("BGT", new Token(TokenTypes.Salto, "BGT", 35, "B"));
-            //KeyWords.Add("BLT", new Token(TokenTypes.Salto, "BLT", 36, "B"));
-
-            // No Operation
-            KeyWords.Add("NOP", new Token(TokenTypes.NOP, "NOP", 126, "N"));
-
-            // Halt Operation
-            KeyWords.Add("HLT", new Token(TokenTypes.Fin, "HLT", 127, "H"));
-
-            // Registers
-            for (int i = 0; i <= 31; i++)
-            {
-                KeyWords.Add("R" + i.ToString(), new Token(TokenTypes.Registro, "R" + i.ToString(), i, "R"));
-            }
-
-            // Separator
-            KeyWords.Add(",", new Token(TokenTypes.Coma, ",", 1, ","));
-        }
-
-        private void CreateParsingRules()
-        {
-            ParseRules.Add("LV", RuleTypes.Load_Instrucction);
-            ParseRules.Add("D", RuleTypes.DirectivaDato); // Data Directive
-            ParseRules.Add("C", RuleTypes.DirectivaCódigo); // Code Directive
-            ParseRules.Add("T", RuleTypes.Etiqueta); // Labels
-            ParseRules.Add("AVE", RuleTypes.Declaración); // Statement
-            ParseRules.Add("AV", RuleTypes.Declaración_NI); // Not Initialized Statement
-            ParseRules.Add("OR,R,R", RuleTypes.Instrucción_3R); // R-instruction
-            ParseRules.Add("OR,R,E", RuleTypes.Instrucción_3I); //  E-instruction
-            ParseRules.Add("LR,V", RuleTypes.Instrucción_L); // Load V
-            ParseRules.Add("LR,E", RuleTypes.Instrucción_LI); // Load E
-            ParseRules.Add("SV,R", RuleTypes.Instrucción_S); // Store
-            ParseRules.Add("JT", RuleTypes.Instrucción_J); // Unconditional Branch
-            ParseRules.Add("BR,T", RuleTypes.Instrucción_B); // Conditional Branch
-            ParseRules.Add("N", RuleTypes.Instrucción_N); // NOP
-            ParseRules.Add("H", RuleTypes.Instrucción_H); // HALT
-        }
-
         public int AssembleSourceFile()
         {
-            inputFileContent = File.ReadAllLines(sourceFile);
+            InputFileContent = File.ReadAllLines(SourceFile);
 
             int lineNumber = 0;
             int address = 0;
@@ -125,9 +35,9 @@ namespace SimulatorAcc
             string ParseKey;
             ParseErrors = 0;
             LexErrors = 0;
-            result = true;
+            Result = true;
 
-            foreach (string line in inputFileContent)
+            foreach (string line in InputFileContent)
             {
                 lineNumber++;
 
@@ -170,7 +80,7 @@ namespace SimulatorAcc
                         continue;
                     }
 
-                    Token thisToken = Lexer(thisWord, lineNumber, isBranchInstruction);
+                    Token thisToken = Tokenizer(thisWord, lineNumber, isBranchInstruction);
                     ParseKey += thisToken.Key;
                     lineParsing.Tokens.Add(thisToken);
                 }
@@ -197,24 +107,20 @@ namespace SimulatorAcc
                 // Identify Instruction or Data (Process the Construct)
                 switch (ruleId)
                 {
-                    // Not Initialized Statement
-                    case RuleTypes.Declaración_NI:
+                    case RuleTypes.NotInitStatement:
                         SymbolTable.Add(new Symbol(TokenTypes.Variable, lineParsing.Tokens[1].Name, address++, 0));
                         break;
 
-                    // Statement
-                    case RuleTypes.Declaración:
+                    case RuleTypes.Statement:
                         SymbolTable.Add(new Symbol(TokenTypes.Variable, lineParsing.Tokens[1].Name, address++, lineParsing.Tokens[2].Id));
                         break;
 
-                    // Label
-                    case RuleTypes.Etiqueta:
-                        SymbolTable.Add(new Symbol(TokenTypes.Etiqueta, lineParsing.Tokens[0].Name.Substring(1), instructionNumber, instructionNumber));
+                    case RuleTypes.Label:
+                        SymbolTable.Add(new Symbol(TokenTypes.Label, lineParsing.Tokens[0].Name.Substring(1), instructionNumber, instructionNumber));
                         break;
 
-                    //  R3 Instructions. ex: "add r3 , r1 , r2"
-                    case RuleTypes.Instrucción_3I:
-                    case RuleTypes.Instrucción_3R:
+                    case RuleTypes.NumberOperation:
+                    case RuleTypes.VariableOperation:
                         Code.Add(new Instruction(
                             dirección: instructionNumber++,
                             línea: lineNumber,
@@ -222,23 +128,23 @@ namespace SimulatorAcc
                             tipo: lineParsing.RuleType,
                             operación: lineParsing.Tokens[0].Name,
                             O1: lineParsing.Tokens[1].Name,
-                            O2: lineParsing.Tokens[3].Name,
-                            O3: lineParsing.Tokens[5].Name,
+                            O2: "",
+                            O3: "",
                             tipoOp: lineParsing.Tokens[0].Type,
                             IdOp: lineParsing.Tokens[0].Id,
                             tipoO1: lineParsing.Tokens[1].Type,
                             vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: lineParsing.Tokens[3].Type,
-                            vO2: lineParsing.Tokens[3].Id,
-                            tipoO3: lineParsing.Tokens[5].Type,
-                            vO3: lineParsing.Tokens[5].Id,
+                            tipoO2: TokenTypes.Void,
+                            vO2: 0,
+                            tipoO3: TokenTypes.Void,
+                            vO3: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
-                    // Load Instructions ex: "Load A"
-                    case RuleTypes.Load_Instrucction:
-                        // Verify If The Second Operand is Variable
+                    case RuleTypes.LoadVariable:
+                    case RuleTypes.LoadNumber:
+                        // Verify If The Second Operand is Variable or E
                         if (lineParsing.Tokens[1].Type == TokenTypes.Variable)
                         {
                             // Search the Variable in the SymbolTable
@@ -247,12 +153,12 @@ namespace SimulatorAcc
                             {
                                 lineParsing.Tokens[1].Id = v.Address;
                             }
-                            else if (ruleId != RuleTypes.Instrucción_LI)
+                            else if (ruleId != RuleTypes.LoadNumber)
                             {
                                 // Error
                                 Errors.Add(new Error(lineNumber, "Undeclared_Variable", ParseKey, $"Line {lineNumber}: Variable {lineParsing.Tokens[1].Name} was not declared"));
                                 ParseErrors++;
-                                result = false;
+                                Result = false;
                             }
                         }
                         Code.Add(new Instruction(
@@ -268,58 +174,15 @@ namespace SimulatorAcc
                             IdOp: lineParsing.Tokens[0].Id,
                             tipoO1: lineParsing.Tokens[1].Type,
                             vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Vacío,
+                            tipoO2: TokenTypes.Void,
                             vO2: 0,
-                            tipoO3: TokenTypes.Vacío,
+                            tipoO3: TokenTypes.Void,
                             vO3: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
-                    // Load Instructions ex: "Load r9 , 3"
-                    case RuleTypes.Instrucción_L:
-                    case RuleTypes.Instrucción_LI:
-
-                        // Verify If The Second Operand is Variable
-                        if (lineParsing.Tokens[3].Type == TokenTypes.Variable)
-                        {
-                            // Search the Variable in the SymbolTable
-                            Symbol? v = SymbolTable.FirstOrDefault(d => d.Name == lineParsing.Tokens[3].Name);
-                            if (v != null)
-                            {
-                                lineParsing.Tokens[3].Id = v.Address;
-                            }
-                            else if (ruleId != RuleTypes.Instrucción_LI)
-                            {
-                                // Error
-                                Errors.Add(new Error(lineNumber, "Undeclared_Variable", ParseKey, $"Line {lineNumber}: Variable {lineParsing.Tokens[1].Name} was not declared"));
-                                ParseErrors++;
-                                result = false;
-                            }
-                        }
-                        Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: lineParsing.Tokens[3].Name,
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: lineParsing.Tokens[3].Type,
-                            vO2: lineParsing.Tokens[3].Id,
-                            tipoO3: TokenTypes.Vacío,
-                            vO3: 0,
-                            tokens: lineParsing.Tokens
-                            ));
-                        break;
-
-                    // Store Instruction. Ex: "store a , r4" => R4 <- a
-                    case RuleTypes.Instrucción_S:
+                    case RuleTypes.Store:
 
                         // Verify If The Second Operand is Variable
                         if (lineParsing.Tokens[1].Type == TokenTypes.Variable)
@@ -335,7 +198,7 @@ namespace SimulatorAcc
                                 // Error
                                 Errors.Add(new Error(lineNumber, "Undeclared_Variable", ParseKey, $"Line {lineNumber}: Variable {lineParsing.Tokens[1].Name} was not declared"));
                                 ParseErrors++;
-                                result = false;
+                                Result = false;
                             }
                         }
                         Code.Add(new Instruction(
@@ -345,25 +208,25 @@ namespace SimulatorAcc
                             tipo: lineParsing.RuleType,
                             operación: lineParsing.Tokens[0].Name,
                             O1: lineParsing.Tokens[1].Name,
-                            O2: lineParsing.Tokens[3].Name,
+                            O2: "",
                             O3: "",
                             tipoOp: lineParsing.Tokens[0].Type,
                             IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[3].Type,
-                            vO1: lineParsing.Tokens[3].Id,
-                            tipoO2: lineParsing.Tokens[1].Type,
-                            vO2: lineParsing.Tokens[1].Id,
-                            tipoO3: TokenTypes.Vacío,
+                            tipoO1: lineParsing.Tokens[1].Type,
+                            vO1: lineParsing.Tokens[1].Id,
+                            tipoO2: TokenTypes.Void,
+                            vO2: 0,
+                            tipoO3: TokenTypes.Void,
                             vO3: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
                     // Unconditional Jump Instruccions.
-                    case RuleTypes.Instrucción_J:
-
+                    case RuleTypes.UnconditionalJump:
+                    case RuleTypes.conditionalJump:
                         // Verify If The Second Operand is Label
-                        if (lineParsing.Tokens[1].Type == TokenTypes.Etiqueta)
+                        if (lineParsing.Tokens[1].Type == TokenTypes.Label)
                         {
 
                             // Search the Label in the SymbolTable
@@ -377,7 +240,7 @@ namespace SimulatorAcc
                                 // Error
                                 Errors.Add(new Error(lineNumber, "Undeclared_Label", ParseKey, $"Line {lineNumber}: Label {lineParsing.Tokens[1].Name} was not declared"));
                                 ParseErrors++;
-                                result = false;
+                                Result = false;
                             }
                         }
                         Code.Add(new Instruction(
@@ -393,55 +256,15 @@ namespace SimulatorAcc
                             IdOp: lineParsing.Tokens[0].Id,
                             tipoO1: lineParsing.Tokens[1].Type,
                             vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Vacío,
+                            tipoO2: TokenTypes.Void,
                             vO2: 0,
-                            tipoO3: TokenTypes.Vacío,
+                            tipoO3: TokenTypes.Void,
                             vO3: 0,
                             tokens: lineParsing.Tokens));
                         break;
 
-                    // Jump Instruccions. ex: "bnz r9 , ciclo"
-                    case RuleTypes.Instrucción_B:
-
-                        // Verify If The Second Operand is Label
-                        if (lineParsing.Tokens[3].Type == TokenTypes.Etiqueta)
-                        {
-                            // Search the Label in the SymbolTable
-                            Symbol? v = SymbolTable.FirstOrDefault(d => d.Name == lineParsing.Tokens[3].Name);
-                            if (v != null)
-                            {
-                                lineParsing.Tokens[3].Id = v.Address;
-                            }
-                            else
-                            {
-                                // Error
-                                Errors.Add(new Error(lineNumber, "Undeclared_Label", ParseKey, $"Line {lineNumber}: Label {lineParsing.Tokens[1].Name} was not declared"));
-                                ParseErrors++;
-                                result = false;
-                            }
-                        }
-                        Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: lineParsing.Tokens[3].Name,
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: lineParsing.Tokens[3].Type,
-                            vO2: lineParsing.Tokens[3].Id,
-                            tipoO3: TokenTypes.Vacío,
-                            vO3: 0,
-                            tokens: lineParsing.Tokens));
-                        break;
-
-                    case RuleTypes.Instrucción_H:
-                    case RuleTypes.Instrucción_N:
+                    case RuleTypes.Halt:
+                    case RuleTypes.Nop:
                         Code.Add(new Instruction(
                             dirección: instructionNumber++,
                             línea: lineNumber,
@@ -453,31 +276,30 @@ namespace SimulatorAcc
                             O3: "",
                             tipoOp: lineParsing.Tokens[0].Type,
                             IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: TokenTypes.Vacío,
+                            tipoO1: TokenTypes.Void,
                             vO1: 0,
-                            tipoO2: TokenTypes.Vacío,
+                            tipoO2: TokenTypes.Void,
                             vO2: 0,
-                            tipoO3: TokenTypes.Vacío,
+                            tipoO3: TokenTypes.Void,
                             vO3: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
-                    case RuleTypes.DirectivaCódigo:
+                    case RuleTypes.Code:
                         break;
 
-                    case RuleTypes.DirectivaDato:
+                    case RuleTypes.Data:
                         break;
 
                     default:
                         break;
                 }
             }
-
             return ParseErrors + LexErrors;
         }
 
-        public Token Lexer(string thisWord, int lineNumber, bool isBranchInstruction)
+        public Token Tokenizer(string thisWord, int lineNumber, bool isBranchInstruction)
         {
             int kind;
             char m, n = thisWord[0];
@@ -505,7 +327,7 @@ namespace SimulatorAcc
                 if (kind == 1)
                 {
                     // E = Entero
-                    thisToken = new Token(id: int.Parse(thisWord), type: TokenTypes.Entero, name: thisWord, key: "E");
+                    thisToken = new Token(id: int.Parse(thisWord), type: TokenTypes.Number, name: thisWord, key: "E");
                     return thisToken;
                 }
             }
@@ -514,7 +336,7 @@ namespace SimulatorAcc
             if (n == ChrTag)
             {
                 // T = Tag
-                thisToken = new Token(id: lineNumber, type: TokenTypes.Etiqueta, name: thisWord, key: "T");
+                thisToken = new Token(id: lineNumber, type: TokenTypes.Label, name: thisWord, key: "T");
                 return thisToken;
             }
 
@@ -541,7 +363,7 @@ namespace SimulatorAcc
                 {
                     if (isBranchInstruction)
                     {
-                        thisToken = new Token(id: 0, type: TokenTypes.Etiqueta, name: thisWord, key: "T");
+                        thisToken = new Token(id: 0, type: TokenTypes.Label, name: thisWord, key: "T");
                     }
                     else
                     {
@@ -552,7 +374,7 @@ namespace SimulatorAcc
             }
 
             // Otherwise, return a error token
-            thisToken = new Token(id: -1, type: TokenTypes.ErrorLéxico, name: thisWord, key: "X");
+            thisToken = new Token(id: -1, type: TokenTypes.LexError, name: thisWord, key: "X");
             Errors.Add(new Error(lineNumber, "InvalidToken", thisWord, $"Line {lineNumber}: Token {thisWord} is invalid."));
             LexErrors++;
             return thisToken;
@@ -562,6 +384,7 @@ namespace SimulatorAcc
         {
             int i = 0;
             PC = 0;
+            MemoryCells = new List<MemoryCell>();
 
             // Load Variables
             foreach (var symbol in SymbolTable)

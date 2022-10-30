@@ -5,20 +5,18 @@
     /// </summary>
     public enum TokenTypes
     {
-        DirectivaDato,
-        DirectivaCódigo,
-        Declaración,
-        Coma,
-        Etiqueta,
-        Operación,
-        Traslado,
-        Salto,
-        Fin,
-        NOP,
+        Data,
+        Code,
+        Statement,
+        Label,
+        Operation,
+        Transfer,
+        Jump,
+        End,
+        NoOperation,
         Variable,
-        Registro,
-        Entero,
-        ErrorLéxico,
-        Vacío
+        Number,
+        LexError,
+        Void
     }
 }

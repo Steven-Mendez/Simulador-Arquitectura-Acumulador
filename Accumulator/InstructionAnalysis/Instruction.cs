@@ -14,7 +14,7 @@ namespace SimulatorAcc.InstructionAnalysis
         public RuleTypes TipoInstrucción { get; set; }
         public string FormatoBinario { get; set; }
 
-        public char[] BinaryData;
+        //public char[] BinaryData;
         public string FormatoHexadecimal { get; set; }
         public uint FormatoDecimal { get; set; }
         public string Operación { get; set; }
@@ -57,32 +57,30 @@ namespace SimulatorAcc.InstructionAnalysis
             FormatoDecimal = (uint)(IdOperacion << 25); //Codigo de operación
             switch (TipoInstrucción)
             {
-                case RuleTypes.Instrucción_L:
-                case RuleTypes.Instrucción_LI:
-                case RuleTypes.Instrucción_S:
-                case RuleTypes.Instrucción_B:
+                case RuleTypes.Store:
+                case RuleTypes.conditionalJump:
                     // Formato I+R
                     FormatoDecimal += (uint)(IdOperando1 << 20); //Primer Operando R
                     FormatoDecimal += (uint)(IdOperando2);       //Segundo Operando E
                     break;
-                case RuleTypes.Instrucción_J:
+                case RuleTypes.UnconditionalJump:
                     // Formato I
                     FormatoDecimal += (uint)(IdOperando1);       //Primer Operando E
                     break;
-                case RuleTypes.Instrucción_3I:
+                case RuleTypes.NumberOperation:
                     //Formato R+I
                     FormatoDecimal += (uint)(IdOperando1 << 20); //Primer Operando R
                     FormatoDecimal += (uint)(IdOperando2 << 15); //Segundo Operando R
                     FormatoDecimal += (uint)(IdOperando3);       //Tercer Operando E
                     break;
-                case RuleTypes.Instrucción_3R:
+                case RuleTypes.VariableOperation:
                     //Formato R
                     FormatoDecimal += (uint)(IdOperando1 << 20); //Primer Operando R
                     FormatoDecimal += (uint)(IdOperando2 << 15); //Segundo Operando R
                     FormatoDecimal += (uint)(IdOperando2 << 10); //Tercer Operando R
                     break;
-                case RuleTypes.Instrucción_H:
-                case RuleTypes.Instrucción_N:
+                case RuleTypes.Halt:
+                case RuleTypes.Nop:
                     //Formato I sin operando
                     break;
             }
