@@ -122,22 +122,16 @@ namespace SimulatorAcc
                     case RuleTypes.NumberOperation:
                     case RuleTypes.VariableOperation:
                         Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: "",
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Void,
-                            vO2: 0,
-                            tipoO3: TokenTypes.Void,
-                            vO3: 0,
+                            adddress: instructionNumber++,
+                            line: lineNumber,
+                            text: leanLine,
+                            instructionType: lineParsing.RuleType,
+                            operation: lineParsing.Tokens[0].Name,
+                            operand: lineParsing.Tokens[1].Name,
+                            operationType: lineParsing.Tokens[0].Type,
+                            operationCode: lineParsing.Tokens[0].Id,
+                            operandType: lineParsing.Tokens[1].Type,
+                            operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
                         break;
@@ -162,22 +156,16 @@ namespace SimulatorAcc
                             }
                         }
                         Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: "",
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Void,
-                            vO2: 0,
-                            tipoO3: TokenTypes.Void,
-                            vO3: 0,
+                            adddress: instructionNumber++,
+                            line: lineNumber,
+                            text: leanLine,
+                            instructionType: lineParsing.RuleType,
+                            operation: lineParsing.Tokens[0].Name,
+                            operand: lineParsing.Tokens[1].Name,
+                            operationType: lineParsing.Tokens[0].Type,
+                            operationCode: lineParsing.Tokens[0].Id,
+                            operandType: lineParsing.Tokens[1].Type,
+                            operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
                         break;
@@ -202,22 +190,16 @@ namespace SimulatorAcc
                             }
                         }
                         Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: "",
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Void,
-                            vO2: 0,
-                            tipoO3: TokenTypes.Void,
-                            vO3: 0,
+                            adddress: instructionNumber++,
+                            line: lineNumber,
+                            text: leanLine,
+                            instructionType: lineParsing.RuleType,
+                            operation: lineParsing.Tokens[0].Name,
+                            operand: lineParsing.Tokens[1].Name,
+                            operationType: lineParsing.Tokens[0].Type,
+                            operationCode: lineParsing.Tokens[0].Id,
+                            operandType: lineParsing.Tokens[1].Type,
+                            operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
                         break;
@@ -244,44 +226,32 @@ namespace SimulatorAcc
                             }
                         }
                         Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: lineParsing.Tokens[1].Name,
-                            O2: "",
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: lineParsing.Tokens[1].Type,
-                            vO1: lineParsing.Tokens[1].Id,
-                            tipoO2: TokenTypes.Void,
-                            vO2: 0,
-                            tipoO3: TokenTypes.Void,
-                            vO3: 0,
+                            adddress: instructionNumber++,
+                            line: lineNumber,
+                            text: leanLine,
+                            instructionType: lineParsing.RuleType,
+                            operation: lineParsing.Tokens[0].Name,
+                            operand: lineParsing.Tokens[1].Name,
+                            operationType: lineParsing.Tokens[0].Type,
+                            operationCode: lineParsing.Tokens[0].Id,
+                            operandType: lineParsing.Tokens[1].Type,
+                            operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens));
                         break;
 
                     case RuleTypes.Halt:
                     case RuleTypes.Nop:
                         Code.Add(new Instruction(
-                            dirección: instructionNumber++,
-                            línea: lineNumber,
-                            instrucción: leanLine,
-                            tipo: lineParsing.RuleType,
-                            operación: lineParsing.Tokens[0].Name,
-                            O1: "",
-                            O2: "",
-                            O3: "",
-                            tipoOp: lineParsing.Tokens[0].Type,
-                            IdOp: lineParsing.Tokens[0].Id,
-                            tipoO1: TokenTypes.Void,
-                            vO1: 0,
-                            tipoO2: TokenTypes.Void,
-                            vO2: 0,
-                            tipoO3: TokenTypes.Void,
-                            vO3: 0,
+                            adddress: instructionNumber++,
+                            line: lineNumber,
+                            text: leanLine,
+                            instructionType: lineParsing.RuleType,
+                            operation: lineParsing.Tokens[0].Name,
+                            operand: "",
+                            operationType: lineParsing.Tokens[0].Type,
+                            operationCode: lineParsing.Tokens[0].Id,
+                            operandType: TokenTypes.Void,
+                            operandCode: 0,
                             tokens: lineParsing.Tokens
                             ));
                         break;
@@ -403,8 +373,8 @@ namespace SimulatorAcc
             foreach (var instruction in Code)
             {
                 MemoryCells[i].T = 'I';
-                MemoryCells[i].Value = instruction.FormatoDecimal.ToString();
-                MemoryCells[i].Text = instruction.Instrucción;
+                MemoryCells[i].Value = instruction.DecimalFormat.ToString();
+                MemoryCells[i].Text = instruction.Text;
                 i++;
             }
             return PC;
