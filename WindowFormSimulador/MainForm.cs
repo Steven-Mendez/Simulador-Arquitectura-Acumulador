@@ -34,7 +34,7 @@ namespace WindowFormSimulador
             var errorsCount = Compiler.AssembleSourceFile();
 
             txtBoxCode.Lines = Compiler.InputFileContent;
-            dgvRules.DataSource = Compiler.ProgramConstructs;
+            dgvRules.DataSource = Compiler.RulesTable;
             dgvInstrucctions.DataSource = Compiler.Code;
             dgvSymbols.DataSource = Compiler.SymbolTable;
             dgvErrors.DataSource = Compiler.Errors;

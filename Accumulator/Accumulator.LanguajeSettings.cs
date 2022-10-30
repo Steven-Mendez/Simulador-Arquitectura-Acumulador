@@ -17,7 +17,7 @@ namespace SimulatorAcc
         public List<Error> Errors { get; set; } = new List<Error>();
         public int LexErrors { get; set; }
         public List<string> LeanFileContent { get; set; }
-        public List<Construct> ProgramConstructs { get; set; }
+        public List<Rule> RulesTable { get; set; }
         public List<Symbol> SymbolTable { get; set; }
         public List<Instruction> Code { get; set; }
         public string[]? InputFileContent { get; set; }

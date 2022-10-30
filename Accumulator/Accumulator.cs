@@ -14,7 +14,7 @@ namespace SimulatorAcc
             this.SourceFile = sourceFile;
             LeanFileContent = new List<string>();
             Errors = new List<Error>();
-            ProgramConstructs = new List<Construct>();
+            RulesTable = new List<Rule>();
             SymbolTable = new List<Symbol>();
             Code = new List<Instruction>();
             KeyWords = new Dictionary<string, Token>();
@@ -52,7 +52,7 @@ namespace SimulatorAcc
                     continue;
 
                 LeanFileContent.Add(leanLine);
-                Construct lineParsing = new Construct(lineNumber);
+                Rule lineParsing = new Rule(lineNumber);
                 ParseKey = "";
                 ruleId = RuleTypes.None;
                 isBranchInstruction = false;
@@ -91,7 +91,7 @@ namespace SimulatorAcc
                     lineParsing.ParseKey = ParseKey;
                     lineParsing.RuleType = ruleId;
                     lineParsing.IsOk = false;
-                    ProgramConstructs.Add(lineParsing);
+                    RulesTable.Add(lineParsing);
                     Errors.Add(new Error(lineNumber, "InvalidRule", ParseKey, $"Line {lineNumber}: Rule {ParseKey} doesn't exist"));
                     ParseErrors++;
                     continue;
@@ -102,7 +102,7 @@ namespace SimulatorAcc
                 lineParsing.ParseKey = ParseKey;
                 lineParsing.RuleType = ruleId;
                 lineParsing.IsOk = true;
-                ProgramConstructs.Add(lineParsing);
+                RulesTable.Add(lineParsing);
 
                 // Identify Instruction or Data (Process the Construct)
                 switch (ruleId)

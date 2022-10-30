@@ -5,7 +5,7 @@ namespace SimulatorAcc.GrammaticalAnalysis
     /// <summary>
     /// Contains information of a Grammatical Rule match for a line of Source Code.
     /// </summary>
-    public class Construct
+    public class Rule
     {
         public int LineNumber { get; }
         public string ContentText { get; set; } = string.Empty;
@@ -15,7 +15,7 @@ namespace SimulatorAcc.GrammaticalAnalysis
 
         public List<Token> Tokens;
 
-        public Construct(int lineNumber)
+        public Rule(int lineNumber)
         {
             LineNumber = lineNumber;
             Tokens = new List<Token>();
