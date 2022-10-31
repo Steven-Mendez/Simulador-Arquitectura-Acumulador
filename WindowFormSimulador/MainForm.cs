@@ -4,7 +4,16 @@ namespace WindowFormSimulador
 {
     public partial class MainForm : Form
     {
-        private Accumulator? Compiler;
+        private Accumulator? _compiler;
+        private string[]? _code;
+
+        public MainForm(string[] code)
+        {
+            InitializeComponent();
+            menuStrip1.BackColor = Color.White;
+            _code = code;
+            txtBoxCode.Lines = code;
+        }
 
         public MainForm()
         {
@@ -29,22 +38,22 @@ namespace WindowFormSimulador
 
         private void EjectuarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Compiler = new Accumulator(@"C:\Users\steve\source\repos\sample.asm");
+            _compiler = new Accumulator(@"C:\Users\steve\source\repos\sample.asm");
 
-            var errorsCount = Compiler.AssembleSourceFile();
+            var errorsCount = _compiler.AssembleSourceFile();
 
-            txtBoxCode.Lines = Compiler.InputFileContent;
-            dgvRules.DataSource = Compiler.RulesTable;
-            dgvInstrucctions.DataSource = Compiler.Code;
-            dgvSymbols.DataSource = Compiler.SymbolTable;
-            dgvErrors.DataSource = Compiler.Errors;
-            listBox1.DataSource = Compiler.LeanFileContent;
+            txtBoxCode.Lines = _compiler.InputFileContent;
+            dgvRules.DataSource = _compiler.RulesTable;
+            dgvInstrucctions.DataSource = _compiler.Code;
+            dgvSymbols.DataSource = _compiler.SymbolTable;
+            dgvErrors.DataSource = _compiler.Errors;
+            listBox1.DataSource = _compiler.LeanFileContent;
 
             string text, caption = "Result";
 
             if (errorsCount > 0)
             {
-                text = $"Assembled was not entirely successful. {Compiler.LexErrors} lexical errors and {Compiler.ParseErrors} parsing errors were detected.";
+                text = $"Assembled was not entirely successful. {_compiler.LexErrors} lexical errors and {_compiler.ParseErrors} parsing errors were detected.";
                 MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
