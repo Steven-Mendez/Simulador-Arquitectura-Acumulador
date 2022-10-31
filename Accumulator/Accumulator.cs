@@ -11,7 +11,7 @@ namespace SimulatorAcc
     {
         public Accumulator(string sourceFile)
         {
-            this.SourceFile = sourceFile;
+            SourceFile = sourceFile;
             LeanFileContent = new List<string>();
             Errors = new List<Error>();
             RulesTable = new List<Rule>();
@@ -52,7 +52,7 @@ namespace SimulatorAcc
                     continue;
 
                 LeanFileContent.Add(leanLine);
-                Rule lineParsing = new Rule(lineNumber);
+                Rule lineParsing = new(lineNumber);
                 ParseKey = "";
                 ruleId = RuleTypes.None;
                 isBranchInstruction = false;
@@ -116,7 +116,7 @@ namespace SimulatorAcc
                         break;
 
                     case RuleTypes.Label:
-                        SymbolTable.Add(new Symbol(TokenTypes.Label, lineParsing.Tokens[0].Name.Substring(1), instructionNumber, instructionNumber));
+                        SymbolTable.Add(new Symbol(TokenTypes.Label, lineParsing.Tokens[0].Name[1..], instructionNumber, instructionNumber));
                         break;
 
                     case RuleTypes.NumberOperation:
@@ -126,11 +126,11 @@ namespace SimulatorAcc
                             line: lineNumber,
                             text: leanLine,
                             instructionType: lineParsing.RuleType,
-                            operation: lineParsing.Tokens[0].Name,
-                            operand: lineParsing.Tokens[1].Name,
                             operationType: lineParsing.Tokens[0].Type,
+                            operation: lineParsing.Tokens[0].Name,
                             operationCode: lineParsing.Tokens[0].Id,
                             operandType: lineParsing.Tokens[1].Type,
+                            operand: lineParsing.Tokens[1].Name,
                             operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
@@ -160,18 +160,17 @@ namespace SimulatorAcc
                             line: lineNumber,
                             text: leanLine,
                             instructionType: lineParsing.RuleType,
-                            operation: lineParsing.Tokens[0].Name,
-                            operand: lineParsing.Tokens[1].Name,
                             operationType: lineParsing.Tokens[0].Type,
+                            operation: lineParsing.Tokens[0].Name,
                             operationCode: lineParsing.Tokens[0].Id,
                             operandType: lineParsing.Tokens[1].Type,
+                            operand: lineParsing.Tokens[1].Name,
                             operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
                     case RuleTypes.Store:
-
                         // Verify If The Second Operand is Variable
                         if (lineParsing.Tokens[1].Type == TokenTypes.Variable)
                         {
@@ -194,23 +193,21 @@ namespace SimulatorAcc
                             line: lineNumber,
                             text: leanLine,
                             instructionType: lineParsing.RuleType,
-                            operation: lineParsing.Tokens[0].Name,
-                            operand: lineParsing.Tokens[1].Name,
                             operationType: lineParsing.Tokens[0].Type,
+                            operation: lineParsing.Tokens[0].Name,
                             operationCode: lineParsing.Tokens[0].Id,
                             operandType: lineParsing.Tokens[1].Type,
+                            operand: lineParsing.Tokens[1].Name,
                             operandCode: lineParsing.Tokens[1].Id,
                             tokens: lineParsing.Tokens
                             ));
                         break;
 
-                    // Unconditional Jump Instruccions.
                     case RuleTypes.UnconditionalJump:
                     case RuleTypes.conditionalJump:
                         // Verify If The Second Operand is Label
                         if (lineParsing.Tokens[1].Type == TokenTypes.Label)
                         {
-
                             // Search the Label in the SymbolTable
                             Symbol? v = SymbolTable.FirstOrDefault(d => d.Name == lineParsing.Tokens[1].Name);
                             if (v != null)
@@ -230,13 +227,14 @@ namespace SimulatorAcc
                             line: lineNumber,
                             text: leanLine,
                             instructionType: lineParsing.RuleType,
-                            operation: lineParsing.Tokens[0].Name,
-                            operand: lineParsing.Tokens[1].Name,
                             operationType: lineParsing.Tokens[0].Type,
+                            operation: lineParsing.Tokens[0].Name,
                             operationCode: lineParsing.Tokens[0].Id,
                             operandType: lineParsing.Tokens[1].Type,
+                            operand: lineParsing.Tokens[1].Name,
                             operandCode: lineParsing.Tokens[1].Id,
-                            tokens: lineParsing.Tokens));
+                            tokens: lineParsing.Tokens
+                            ));
                         break;
 
                     case RuleTypes.Halt:
@@ -246,10 +244,10 @@ namespace SimulatorAcc
                             line: lineNumber,
                             text: leanLine,
                             instructionType: lineParsing.RuleType,
-                            operation: lineParsing.Tokens[0].Name,
-                            operand: "",
                             operationType: lineParsing.Tokens[0].Type,
+                            operation: lineParsing.Tokens[0].Name,
                             operationCode: lineParsing.Tokens[0].Id,
+                            operand: "",
                             operandType: TokenTypes.Void,
                             operandCode: 0,
                             tokens: lineParsing.Tokens

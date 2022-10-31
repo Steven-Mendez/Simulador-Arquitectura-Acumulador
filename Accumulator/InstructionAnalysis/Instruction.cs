@@ -25,8 +25,8 @@ namespace SimulatorAcc.InstructionAnalysis
         public List<Token> Tokens { get; set; }
 
         public Instruction(int adddress, int line, string text, RuleTypes instructionType,
-            string operation, string operand, TokenTypes operationType, int operationCode,
-            TokenTypes operandType, int operandCode, List<Token> tokens)
+            TokenTypes operationType, string operation, int operationCode, TokenTypes operandType,
+            string operand, int operandCode, List<Token> tokens)
         {
             Adddress = adddress;
             Line = line;
