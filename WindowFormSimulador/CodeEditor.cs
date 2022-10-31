@@ -1,4 +1,4 @@
-﻿using SimulatorAcc;
+﻿using FastColoredTextBoxNS;
 
 namespace WindowFormSimulador
 {
@@ -173,6 +173,20 @@ namespace WindowFormSimulador
         {
             var form = new MainForm(fastColoredTextBox1.Lines.ToArray());
             form.ShowDialog();
+        }
+
+        Style StatementStyle = new TextStyle(Brushes.Blue, null, FontStyle.Italic);
+        Style OperationStyle = new TextStyle(Brushes.DeepSkyBlue, null, FontStyle.Italic);
+
+        private void fastColoredTextBox1_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+        {
+            //clear style of changed range
+            e.ChangedRange.ClearStyle(StatementStyle);
+            e.ChangedRange.ClearStyle(OperationStyle);
+            //comment highlighting
+            //e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(StatementStyle, @".Data|.Code|:[A-Z|a-z|0-9]+");
+            e.ChangedRange.SetStyle(OperationStyle, @"DW|LOAD|ADD|SUB|MUL|DIV|STORE|JMP|JGE|JLE|JL|JNS|JS|JNZ|NOP|HLT");
         }
     }
 }

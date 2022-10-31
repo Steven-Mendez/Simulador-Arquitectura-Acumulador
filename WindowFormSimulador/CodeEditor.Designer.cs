@@ -342,7 +342,6 @@
             this.fastColoredTextBox1.DefaultMarkerSize = 8;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fastColoredTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.LineNumberColor = System.Drawing.SystemColors.ControlDarkDark;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(0, 24);
@@ -354,6 +353,7 @@
             this.fastColoredTextBox1.TabIndex = 2;
             this.fastColoredTextBox1.WordWrap = true;
             this.fastColoredTextBox1.Zoom = 100;
+            this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
             // 
             // panel1
             // 
