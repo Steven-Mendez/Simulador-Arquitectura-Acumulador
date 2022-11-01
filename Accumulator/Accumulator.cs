@@ -9,7 +9,7 @@ namespace SimulatorAcc
 {
     public partial class Accumulator
     {
-        public Accumulator(string sourceFile)
+        public Accumulator(string[] sourceFile)
         {
             SourceFile = sourceFile;
             LeanFileContent = new List<string>();
@@ -25,7 +25,7 @@ namespace SimulatorAcc
 
         public int AssembleSourceFile()
         {
-            InputFileContent = File.ReadAllLines(SourceFile);
+            InputFileContent = SourceFile;
 
             int lineNumber = 0;
             int address = 0;
@@ -352,7 +352,6 @@ namespace SimulatorAcc
         {
             int i = 0;
             PC = 0;
-            MemoryCells = new List<MemoryCell>();
 
             // Load Variables
             foreach (var symbol in SymbolTable)
@@ -360,7 +359,7 @@ namespace SimulatorAcc
                 if (symbol.SymbolType != TokenTypes.Variable)
                     continue;
 
-                MemoryCells[i].T = 'V';
+                MemoryCells![i].Type = "Variable";
                 MemoryCells[i].Value = symbol.InitValue.ToString();
                 MemoryCells[i].Text = symbol.Name;
                 i++;
@@ -370,7 +369,7 @@ namespace SimulatorAcc
             PC = i;
             foreach (var instruction in Code)
             {
-                MemoryCells[i].T = 'I';
+                MemoryCells![i].Type = "Instruction";
                 MemoryCells[i].Value = instruction.DecimalFormat.ToString();
                 MemoryCells[i].Text = instruction.Text;
                 i++;

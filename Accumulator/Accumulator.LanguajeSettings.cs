@@ -13,7 +13,7 @@ namespace SimulatorAcc
         private const char ChrComment = ';';
 
         // Properties
-        private string SourceFile { get; }
+        private string[] SourceFile { get; }
         public List<Error> Errors { get; set; } = new List<Error>();
         public int LexErrors { get; set; }
         public List<string> LeanFileContent { get; set; }

@@ -171,7 +171,7 @@ namespace WindowFormSimulador
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new MainForm(fastColoredTextBox1.Lines.ToArray());
+            var form = new AnalysisForm(fastColoredTextBox1.Lines.ToArray());
             form.ShowDialog();
         }
 
