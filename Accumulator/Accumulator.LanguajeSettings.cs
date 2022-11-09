@@ -59,9 +59,7 @@ namespace SimulatorAcc
             KeyWords.Add("JGE", new Token(TokenTypes.Jump, "JGE", 34, "B"));
             KeyWords.Add("JL", new Token(TokenTypes.Jump, "JL", 35, "B"));
             KeyWords.Add("JLE", new Token(TokenTypes.Jump, "JLE", 36, "B"));
-            KeyWords.Add("JNS", new Token(TokenTypes.Jump, "JNS", 37, "B"));
-            KeyWords.Add("JS", new Token(TokenTypes.Jump, "JS", 38, "B"));
-            KeyWords.Add("JNZ", new Token(TokenTypes.Jump, "JMZ", 39, "B"));
+            KeyWords.Add("JZ", new Token(TokenTypes.Jump, "JZ", 37, "B"));
 
             // Others
             KeyWords.Add("NOP", new Token(TokenTypes.NoOperation, "NOP", 126, "N"));

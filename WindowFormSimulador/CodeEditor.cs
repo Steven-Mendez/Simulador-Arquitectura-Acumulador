@@ -175,18 +175,20 @@ namespace WindowFormSimulador
             form.ShowDialog();
         }
 
-        Style StatementStyle = new TextStyle(Brushes.Blue, null, FontStyle.Italic);
-        Style OperationStyle = new TextStyle(Brushes.DeepSkyBlue, null, FontStyle.Italic);
+        readonly Style StatementStyle = new TextStyle(Brushes.Blue, null, FontStyle.Italic);
+        readonly Style OperationStyle = new TextStyle(Brushes.DeepSkyBlue, null, FontStyle.Italic);
+        readonly string operations = "DW|LOAD|ADD|SUB|MUL|DIV|STORE|JMP|JG|JGE|JL|JLE|JZ|NOP|HLT|CMP";
 
-        private void fastColoredTextBox1_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+        private void fastColoredTextBox1_TextChanged(object sender, TextChangedEventArgs e)
         {
             //clear style of changed range
             e.ChangedRange.ClearStyle(StatementStyle);
             e.ChangedRange.ClearStyle(OperationStyle);
+
             //comment highlighting
-            //e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
-            e.ChangedRange.SetStyle(StatementStyle, @".Data|.Code|:[A-Z|a-z|0-9]+");
-            e.ChangedRange.SetStyle(OperationStyle, @"DW|LOAD|ADD|SUB|MUL|DIV|STORE|JMP|JGE|JLE|JL|JNS|JS|JNZ|NOP|HLT");
+            e.ChangedRange.SetStyle(StatementStyle, @".Data|.Code|.DATA|.CODE|:[A-Z|a-z|0-9]+");
+           
+            e.ChangedRange.SetStyle(OperationStyle, @$"{operations}|{operations.ToLower()}");
         }
     }
 }

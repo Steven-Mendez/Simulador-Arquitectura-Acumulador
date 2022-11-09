@@ -9,7 +9,8 @@ namespace WindowFormSimulador
         private int i = 0;
         private int len = 0;
         private Dictionary<string, (string, int)> variables;
-        const int MAddress = 0, MType = 3, MValue = 2, MText = 1;
+        private const int MAddress = 0, MType = 3, MValue = 2, MText = 1;
+        private bool[] flags = { false, false };
 
         public CPUForm(Accumulator compiler)
         {
@@ -296,6 +297,146 @@ namespace WindowFormSimulador
                 return;
             }
 
+            if (text.Contains("CMP"))
+            {
+                text = text.Replace("CMP", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = value.Item2.ToString();
+
+                    // Then compare it with the ACC
+                    var result = Convert.ToInt32(textBoxACC.Text) - Convert.ToInt32(textBoxMDR.Text);
+                    flags[0] = flags[1] = false;
+                    flags[0] = result == 0;
+                    flags[1] = result >= 0;
+                }
+                else
+                {
+                    // MDR now its containing the value
+                    textBoxMDR.Text = text;
+
+                    // Then compare it with the ACC
+                    var result = Convert.ToInt32(textBoxACC.Text) - Convert.ToInt32(textBoxMDR.Text);
+                    flags[0] = flags[1] = false;
+                    flags[0] = result == 0;
+                    flags[1] = result >= 0;
+                }
+                return;
+            }
+
+            // Jump Greater than
+            if (text.Contains("JG"))
+            {
+                text = text.Replace("JG", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if Z = false and S = true
+                    if (!flags[0] && flags[1])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
+                }
+                return;
+            }
+
+            // Jump Greater than Equal to
+            if (text.Contains("JGE"))
+            {
+                text = text.Replace("JGE", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if S = true
+                    if (flags[1])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
+                }
+                return;
+            }
+
+            // Jump Less than
+            if (text.Contains("JL"))
+            {
+                text = text.Replace("JL", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if S = false
+                    if (!flags[1])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
+                }
+                return;
+            }
+
+            // Jump Less than Equal to
+            if (text.Contains("JLE"))
+            {
+                text = text.Replace("JLE", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if Z = true and S = false
+                    if (flags[0] && !flags[1])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
+                }
+                return;
+            }
+
+            // Jump when Zero
+            if (text.Contains("JZ"))
+            {
+                text = text.Replace("JZ", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if Z = true
+                    if (flags[0])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
+                }
+                return;
+            }
         }
     }
 }
