@@ -128,7 +128,7 @@
             // 
             this.verCPUToolStripMenuItem.Name = "verCPUToolStripMenuItem";
             this.verCPUToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.verCPUToolStripMenuItem.Text = "Ver CPU";
+            this.verCPUToolStripMenuItem.Text = "Ejecutar";
             this.verCPUToolStripMenuItem.Click += new System.EventHandler(this.verCPUToolStripMenuItem_Click_1);
             // 
             // salirToolStripMenuItem
@@ -136,6 +136,7 @@
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.salirToolStripMenuItem.Text = "Salir";
+            this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
             // 
             // mainPanel
             // 

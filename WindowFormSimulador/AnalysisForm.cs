@@ -45,5 +45,10 @@ namespace WindowFormSimulador
             var form = new CPUForm(_compiler!);
             form.ShowDialog();
         }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

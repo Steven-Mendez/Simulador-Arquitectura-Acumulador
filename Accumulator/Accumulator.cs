@@ -357,7 +357,13 @@ namespace SimulatorAcc
             foreach (var symbol in SymbolTable)
             {
                 if (symbol.SymbolType != TokenTypes.Variable)
+                {
+                    MemoryCells![i].Type = "Label";
+                    MemoryCells[i].Value = (symbol.Address + SymbolTable.Count - 1).ToString();
+                    MemoryCells[i].Text = symbol.Name;
+                    i++;
                     continue;
+                }    
 
                 MemoryCells![i].Type = "Variable";
                 MemoryCells[i].Value = symbol.InitValue.ToString();

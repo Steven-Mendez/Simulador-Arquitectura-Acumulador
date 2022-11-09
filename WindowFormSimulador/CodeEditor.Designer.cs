@@ -246,8 +246,8 @@
             // runToolStripMenuItem
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.runToolStripMenuItem.Text = "Ejecutar";
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
+            this.runToolStripMenuItem.Text = "Ensamblar";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
@@ -342,6 +342,7 @@
             this.fastColoredTextBox1.DefaultMarkerSize = 8;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fastColoredTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.LineNumberColor = System.Drawing.SystemColors.ControlDarkDark;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(0, 24);

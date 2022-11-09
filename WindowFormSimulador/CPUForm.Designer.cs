@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CPUForm));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBoxMAR = new System.Windows.Forms.TextBox();
@@ -36,7 +37,6 @@
             this.textBoxPC = new System.Windows.Forms.TextBox();
             this.textBoxIR = new System.Windows.Forms.TextBox();
             this.textBoxACC = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.textBoxFlags = new System.Windows.Forms.TextBox();
             this.textBoxES = new System.Windows.Forms.TextBox();
             this.dataGridViewMemory = new System.Windows.Forms.DataGridView();
@@ -45,6 +45,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMemory)).BeginInit();
             this.SuspendLayout();
@@ -147,18 +150,6 @@
             this.textBoxACC.Text = "ACC";
             this.textBoxACC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.label1.Location = new System.Drawing.Point(662, 194);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 30);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "ALU";
-            // 
             // textBoxFlags
             // 
             this.textBoxFlags.BackColor = System.Drawing.Color.White;
@@ -193,8 +184,10 @@
             // 
             this.dataGridViewMemory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMemory.Location = new System.Drawing.Point(23, 61);
+            this.dataGridViewMemory.MultiSelect = false;
             this.dataGridViewMemory.Name = "dataGridViewMemory";
             this.dataGridViewMemory.RowTemplate.Height = 25;
+            this.dataGridViewMemory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMemory.Size = new System.Drawing.Size(213, 299);
             this.dataGridViewMemory.TabIndex = 11;
             // 
@@ -258,11 +251,42 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Memoria";
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.White;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.label7.Location = new System.Drawing.Point(629, 110);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 21);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "ACC";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.label1.Location = new System.Drawing.Point(670, 198);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 21);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "ALU";
+            // 
             // CPUForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -271,7 +295,6 @@
             this.Controls.Add(this.dataGridViewMemory);
             this.Controls.Add(this.textBoxES);
             this.Controls.Add(this.textBoxFlags);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxACC);
             this.Controls.Add(this.textBoxIR);
             this.Controls.Add(this.textBoxPC);
@@ -284,7 +307,9 @@
             this.Name = "CPUForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulador Acumulador - CPU";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CPUForm_FormClosing);
             this.Load += new System.EventHandler(this.CPUForm_Load);
+            this.Shown += new System.EventHandler(this.CPUForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMemory)).EndInit();
             this.ResumeLayout(false);
@@ -301,7 +326,6 @@
         private TextBox textBoxPC;
         private TextBox textBoxIR;
         private TextBox textBoxACC;
-        private Label label1;
         private TextBox textBoxFlags;
         private TextBox textBoxES;
         private DataGridView dataGridViewMemory;
@@ -310,5 +334,8 @@
         private Label label4;
         private Label label5;
         private Label label6;
+        private System.Windows.Forms.Timer timer1;
+        private Label label7;
+        private Label label1;
     }
 }
