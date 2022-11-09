@@ -186,6 +186,7 @@
             this.dataGridViewMemory.Location = new System.Drawing.Point(23, 61);
             this.dataGridViewMemory.MultiSelect = false;
             this.dataGridViewMemory.Name = "dataGridViewMemory";
+            this.dataGridViewMemory.RowHeadersVisible = false;
             this.dataGridViewMemory.RowTemplate.Height = 25;
             this.dataGridViewMemory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMemory.Size = new System.Drawing.Size(213, 299);

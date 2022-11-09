@@ -43,7 +43,7 @@ namespace SimulatorAcc
 
                 // Clean the line
                 string leanLine = Regex.Replace(Regex.Replace(line.Trim(charsToTrim), "[ \t]+", " "), ",", " ,");
-
+                leanLine = leanLine.ToUpper();
                 // Exceptional Cases
                 if (leanLine == "")
                     continue;

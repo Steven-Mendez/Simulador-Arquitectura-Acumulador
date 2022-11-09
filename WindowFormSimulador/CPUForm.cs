@@ -1,7 +1,5 @@
 ﻿using SimulatorAcc;
 using SimulatorAcc.Memory;
-using System.Net;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WindowFormSimulador
 {
@@ -11,7 +9,7 @@ namespace WindowFormSimulador
         private int i = 0;
         private int len = 0;
         private Dictionary<string, (string, int)> variables;
-        const int MAddress = 0, MType = 1, MValue = 2, MText = 3;
+        const int MAddress = 0, MType = 3, MValue = 2, MText = 1;
 
         public CPUForm(Accumulator compiler)
         {
@@ -29,13 +27,20 @@ namespace WindowFormSimulador
                 _compiler.MemoryCells.Add(
                     new MemoryCell()
                     {
-                        Address = (i + padding).ToString().PadLeft(4, '0'),
+                        Address = (i + padding).ToString().PadLeft(3, '0'),
                         Value = "0"
                     });
             }
 
             int pc = _compiler!.LoadProgram();
             dataGridViewMemory.DataSource = _compiler!.MemoryCells;
+            dataGridViewMemory.Columns[MAddress].HeaderText = "Dir";
+            dataGridViewMemory.Columns[MAddress].Width = 26;
+            dataGridViewMemory.Columns[MText].HeaderText = "Código";
+            dataGridViewMemory.Columns[MText].Width = 105;
+            dataGridViewMemory.Columns[MValue].HeaderText = "Valor";
+            dataGridViewMemory.Columns[MValue].Width = 62;
+            dataGridViewMemory.Columns[MType].Visible = false;
             textBoxMAR.Text = "0";
             textBoxMDR.Text = "0";
             textBoxPC.Text = "0";
@@ -60,9 +65,9 @@ namespace WindowFormSimulador
 
             // Obtaining the data
             string address = dataGridViewMemory.Rows[i].Cells[MAddress].Value.ToString()!;
-            string type = dataGridViewMemory.Rows[i].Cells[MType].Value.ToString()!;
             string text = dataGridViewMemory.Rows[i].Cells[MText].Value.ToString()!;
             string value = dataGridViewMemory.Rows[i].Cells[MValue].Value.ToString()!;
+            string type = dataGridViewMemory.Rows[i].Cells[MType].Value.ToString()!;
 
             if (!Equals("Variable", type) && !Equals("Label", type))
             {
@@ -269,6 +274,24 @@ namespace WindowFormSimulador
                     var sum1 = Convert.ToInt32(textBoxACC.Text);
                     var sum2 = Convert.ToInt32(textBoxMDR.Text);
                     textBoxACC.Text = $"{sum1 / sum2}";
+                }
+                return;
+            }
+
+            if (text.Contains("JMP"))
+            {
+                text = text.Replace("JMP", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value
+                    textBoxPC.Text = textBoxMDR.Text;
+                    i = value.Item2 - 1;
                 }
                 return;
             }
