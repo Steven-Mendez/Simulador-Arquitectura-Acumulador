@@ -30,6 +30,7 @@ namespace WindowFormSimulador
             if (errorsCount > 0)
             {
                 text = $"El ensamblado no fue del todo Ensamblado no fue del todo exitoso exitoso. {_compiler.LexErrors} errores léxicos y {_compiler.ParseErrors} errores de análisis fueron detectados.";
+                verCPUToolStripMenuItem.Enabled = false;
                 MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
