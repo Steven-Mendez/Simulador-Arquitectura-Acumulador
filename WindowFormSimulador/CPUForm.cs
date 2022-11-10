@@ -380,7 +380,7 @@ namespace WindowFormSimulador
                     textBoxMDR.Text = (value.Item2 - 1).ToString();
 
                     // PC pointing to the same value if Z = true and S = false
-                    if (flags[0] && !flags[1])
+                    if (flags[0] || !flags[1])
                     {
                         textBoxPC.Text = textBoxMDR.Text;
                         i = value.Item2 - 1;
