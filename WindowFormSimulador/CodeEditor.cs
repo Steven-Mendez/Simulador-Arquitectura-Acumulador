@@ -177,7 +177,7 @@ namespace WindowFormSimulador
 
         readonly Style StatementStyle = new TextStyle(Brushes.Blue, null, FontStyle.Italic);
         readonly Style OperationStyle = new TextStyle(Brushes.DeepSkyBlue, null, FontStyle.Italic);
-        readonly string operations = "DW|LOAD|ADD|SUB|MUL|DIV|STORE|JMP|JG|JGE|JL|JLE|JZ|NOP|HLT|CMP";
+        readonly string operations = "DW|LOAD|ADD|SUB|MUL|DIV|STORE|JMP|JGE|JG|JLE|JL|JZ|NOP|HLT|CMP";
 
         private void fastColoredTextBox1_TextChanged(object sender, TextChangedEventArgs e)
         {

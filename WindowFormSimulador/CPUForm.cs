@@ -1,5 +1,6 @@
 ﻿using SimulatorAcc;
 using SimulatorAcc.Memory;
+using System.Windows.Forms;
 
 namespace WindowFormSimulador
 {
@@ -35,13 +36,11 @@ namespace WindowFormSimulador
 
             int pc = _compiler!.LoadProgram();
             dataGridViewMemory.DataSource = _compiler!.MemoryCells;
-            dataGridViewMemory.Columns[MAddress].HeaderText = "Dir";
-            dataGridViewMemory.Columns[MAddress].Width = 26;
-            dataGridViewMemory.Columns[MText].HeaderText = "Código";
-            dataGridViewMemory.Columns[MText].Width = 105;
-            dataGridViewMemory.Columns[MValue].HeaderText = "Valor";
-            dataGridViewMemory.Columns[MValue].Width = 62;
             dataGridViewMemory.Columns[MType].Visible = false;
+            dataGridViewMemory.Columns[MAddress].HeaderText = "Dir";
+            dataGridViewMemory.Columns[MText].HeaderText = "Código";
+            dataGridViewMemory.Columns[MValue].HeaderText = "Valor";
+            dataGridViewMemory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             textBoxMAR.Text = "0";
             textBoxMDR.Text = "0";
             textBoxPC.Text = "0";
@@ -121,18 +120,15 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then place it to the ACC
-                    textBoxACC.Text = textBoxMDR.Text;
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
-
-                    // Then place it to the ACC
-                    textBoxACC.Text = textBoxMDR.Text;
                 }
+
+                // Then place it to the ACC
+                textBoxACC.Text = textBoxMDR.Text;
                 return;
             }
 
@@ -173,22 +169,23 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then add it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 + sum2}";
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
-
-                    // Then add it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 + sum2}";
                 }
+
+                // Then add it to the ACC
+                var a = Convert.ToInt32(textBoxACC.Text);
+                var b = Convert.ToInt32(textBoxMDR.Text);
+                textBoxACC.Text = $"{a + b}";
+
+                var result = a + b;
+                flags[0] = flags[1] = false;
+                flags[0] = result == 0;
+                flags[1] = result >= 0;
+
                 return;
             }
 
@@ -202,22 +199,23 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then sub it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 - sum2}";
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
-
-                    // Then sub it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 - sum2}";
                 }
+
+                // Then sub it to the ACC
+                var a = Convert.ToInt32(textBoxACC.Text);
+                var b = Convert.ToInt32(textBoxMDR.Text);
+                textBoxACC.Text = $"{a - b}";
+
+                var result = a - b;
+                flags[0] = flags[1] = false;
+                flags[0] = result == 0;
+                flags[1] = result >= 0;
+
                 return;
             }
 
@@ -231,22 +229,23 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then mul it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 * sum2}";
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
-
-                    // Then mul it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 * sum2}";
                 }
+
+                // Then mul it to the ACC
+                var a = Convert.ToInt32(textBoxACC.Text);
+                var b = Convert.ToInt32(textBoxMDR.Text);
+                textBoxACC.Text = $"{a * b}";
+
+                var result = a * b;
+                flags[0] = flags[1] = false;
+                flags[0] = result == 0;
+                flags[1] = result >= 0;
+
                 return;
             }
 
@@ -260,22 +259,23 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then div it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 / sum2}";
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
-
-                    // Then div it to the ACC
-                    var sum1 = Convert.ToInt32(textBoxACC.Text);
-                    var sum2 = Convert.ToInt32(textBoxMDR.Text);
-                    textBoxACC.Text = $"{sum1 / sum2}";
                 }
+
+                // Then div it to the ACC
+                var a = Convert.ToInt32(textBoxACC.Text);
+                var b = Convert.ToInt32(textBoxMDR.Text);
+                textBoxACC.Text = $"{a / b}";
+
+                var result = a / b;
+                flags[0] = flags[1] = false;
+                flags[0] = result == 0;
+                flags[1] = result >= 0;
+
                 return;
             }
 
@@ -307,23 +307,40 @@ namespace WindowFormSimulador
 
                     // MDR now its containing the value
                     textBoxMDR.Text = value.Item2.ToString();
-
-                    // Then compare it with the ACC
-                    var result = Convert.ToInt32(textBoxACC.Text) - Convert.ToInt32(textBoxMDR.Text);
-                    flags[0] = flags[1] = false;
-                    flags[0] = result == 0;
-                    flags[1] = result >= 0;
                 }
                 else
                 {
                     // MDR now its containing the value
                     textBoxMDR.Text = text;
+                }
 
-                    // Then compare it with the ACC
-                    var result = Convert.ToInt32(textBoxACC.Text) - Convert.ToInt32(textBoxMDR.Text);
-                    flags[0] = flags[1] = false;
-                    flags[0] = result == 0;
-                    flags[1] = result >= 0;
+                // Then compare it with the ACC
+                var result = Convert.ToInt32(textBoxACC.Text) - Convert.ToInt32(textBoxMDR.Text);
+                flags[0] = flags[1] = false;
+                flags[0] = result == 0;
+                flags[1] = result >= 0;
+
+                return;
+            }
+
+            // Jump Greater than Equal to
+            if (text.Contains("JGE"))
+            {
+                text = text.Replace("JGE", "").Trim();
+                if (variables.TryGetValue(text, out (string, int) value))
+                {
+                    // MAR pointing to the address of the variable.
+                    textBoxMAR.Text = value.Item1;
+
+                    // MDR now its containing the value
+                    textBoxMDR.Text = (value.Item2 - 1).ToString();
+
+                    // PC pointing to the same value if S = true
+                    if (flags[1])
+                    {
+                        textBoxPC.Text = textBoxMDR.Text;
+                        i = value.Item2 - 1;
+                    }
                 }
                 return;
             }
@@ -350,10 +367,10 @@ namespace WindowFormSimulador
                 return;
             }
 
-            // Jump Greater than Equal to
-            if (text.Contains("JGE"))
+            // Jump Less than Equal to
+            if (text.Contains("JLE"))
             {
-                text = text.Replace("JGE", "").Trim();
+                text = text.Replace("JLE", "").Trim();
                 if (variables.TryGetValue(text, out (string, int) value))
                 {
                     // MAR pointing to the address of the variable.
@@ -362,8 +379,8 @@ namespace WindowFormSimulador
                     // MDR now its containing the value
                     textBoxMDR.Text = (value.Item2 - 1).ToString();
 
-                    // PC pointing to the same value if S = true
-                    if (flags[1])
+                    // PC pointing to the same value if Z = true and S = false
+                    if (flags[0] && !flags[1])
                     {
                         textBoxPC.Text = textBoxMDR.Text;
                         i = value.Item2 - 1;
@@ -386,28 +403,6 @@ namespace WindowFormSimulador
 
                     // PC pointing to the same value if S = false
                     if (!flags[1])
-                    {
-                        textBoxPC.Text = textBoxMDR.Text;
-                        i = value.Item2 - 1;
-                    }
-                }
-                return;
-            }
-
-            // Jump Less than Equal to
-            if (text.Contains("JLE"))
-            {
-                text = text.Replace("JLE", "").Trim();
-                if (variables.TryGetValue(text, out (string, int) value))
-                {
-                    // MAR pointing to the address of the variable.
-                    textBoxMAR.Text = value.Item1;
-
-                    // MDR now its containing the value
-                    textBoxMDR.Text = (value.Item2 - 1).ToString();
-
-                    // PC pointing to the same value if Z = true and S = false
-                    if (flags[0] && !flags[1])
                     {
                         textBoxPC.Text = textBoxMDR.Text;
                         i = value.Item2 - 1;
