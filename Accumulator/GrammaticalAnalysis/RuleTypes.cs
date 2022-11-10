@@ -16,6 +16,7 @@
         conditionalJump,
         Nop,
         Halt,
+        IO,
         None
     }
 }

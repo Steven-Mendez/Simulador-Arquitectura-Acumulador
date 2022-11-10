@@ -17,6 +17,7 @@
         Variable,
         Number,
         LexError,
-        Void
+        Void,
+        IO
     }
 }

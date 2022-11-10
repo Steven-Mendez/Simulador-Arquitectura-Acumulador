@@ -237,6 +237,7 @@ namespace SimulatorAcc
                             ));
                         break;
 
+                    case RuleTypes.IO:
                     case RuleTypes.Halt:
                     case RuleTypes.Nop:
                         Code.Add(new Instruction(

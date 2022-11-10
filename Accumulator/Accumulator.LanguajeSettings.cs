@@ -61,6 +61,9 @@ namespace SimulatorAcc
             KeyWords.Add("JLE", new Token(TokenTypes.Jump, "JLE", 36, "B"));
             KeyWords.Add("JZ", new Token(TokenTypes.Jump, "JZ", 37, "B"));
 
+            // IO Instruction
+            KeyWords.Add("OUT", new Token(TokenTypes.IO, "OUT", 125, "OP"));
+
             // Others
             KeyWords.Add("NOP", new Token(TokenTypes.NoOperation, "NOP", 126, "N"));
             KeyWords.Add("HLT", new Token(TokenTypes.End, "HLT", 127, "H"));
@@ -80,6 +83,7 @@ namespace SimulatorAcc
             ParseRules.Add("SV", RuleTypes.Store);
             ParseRules.Add("JT", RuleTypes.UnconditionalJump);
             ParseRules.Add("BT", RuleTypes.conditionalJump);
+            ParseRules.Add("OP", RuleTypes.IO);
             ParseRules.Add("AV", RuleTypes.NotInitStatement);
             ParseRules.Add("AVE", RuleTypes.Statement);
         }

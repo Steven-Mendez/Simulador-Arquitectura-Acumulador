@@ -1,6 +1,7 @@
 ﻿using SimulatorAcc;
 using SimulatorAcc.Memory;
 using System.Windows.Forms;
+using WindowFormSimulador.Properties;
 
 namespace WindowFormSimulador
 {
@@ -430,6 +431,21 @@ namespace WindowFormSimulador
                         i = value.Item2 - 1;
                     }
                 }
+                return;
+            }
+
+            if (text.Contains("OUT"))
+            {
+                // MDR now its containing the value
+                textBoxMDR.Text = textBoxACC.Text;
+
+                // Then place it to the I/O
+                var IO = Convert.ToString(Convert.ToInt32(textBoxMDR.Text), toBase: 2).PadLeft(4, '0');
+                IO = IO[(IO.Length - 4)..];
+                LED0.Image = IO.Substring(3, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                LED1.Image = IO.Substring(2, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                LED2.Image = IO.Substring(1, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                LED3.Image = IO.Substring(0, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
                 return;
             }
 

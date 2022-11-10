@@ -38,7 +38,6 @@
             this.textBoxIR = new System.Windows.Forms.TextBox();
             this.textBoxACC = new System.Windows.Forms.TextBox();
             this.textBoxFlags = new System.Windows.Forms.TextBox();
-            this.textBoxES = new System.Windows.Forms.TextBox();
             this.dataGridViewMemory = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -48,8 +47,16 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label7 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.LED0 = new System.Windows.Forms.PictureBox();
+            this.LED1 = new System.Windows.Forms.PictureBox();
+            this.LED2 = new System.Windows.Forms.PictureBox();
+            this.LED3 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMemory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED3)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -165,21 +172,6 @@
             this.textBoxFlags.Text = "Flags";
             this.textBoxFlags.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBoxES
-            // 
-            this.textBoxES.BackColor = System.Drawing.Color.White;
-            this.textBoxES.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxES.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxES.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.textBoxES.Location = new System.Drawing.Point(23, 393);
-            this.textBoxES.Multiline = true;
-            this.textBoxES.Name = "textBoxES";
-            this.textBoxES.ReadOnly = true;
-            this.textBoxES.Size = new System.Drawing.Size(213, 30);
-            this.textBoxES.TabIndex = 10;
-            this.textBoxES.Text = "E/S";
-            this.textBoxES.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // dataGridViewMemory
             // 
             this.dataGridViewMemory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -281,11 +273,59 @@
             this.label1.TabIndex = 19;
             this.label1.Text = "ALU";
             // 
+            // LED0
+            // 
+            this.LED0.BackColor = System.Drawing.Color.White;
+            this.LED0.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
+            this.LED0.Location = new System.Drawing.Point(185, 384);
+            this.LED0.Name = "LED0";
+            this.LED0.Size = new System.Drawing.Size(50, 50);
+            this.LED0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LED0.TabIndex = 20;
+            this.LED0.TabStop = false;
+            // 
+            // LED1
+            // 
+            this.LED1.BackColor = System.Drawing.Color.White;
+            this.LED1.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
+            this.LED1.Location = new System.Drawing.Point(129, 384);
+            this.LED1.Name = "LED1";
+            this.LED1.Size = new System.Drawing.Size(50, 50);
+            this.LED1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LED1.TabIndex = 22;
+            this.LED1.TabStop = false;
+            // 
+            // LED2
+            // 
+            this.LED2.BackColor = System.Drawing.Color.White;
+            this.LED2.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
+            this.LED2.Location = new System.Drawing.Point(73, 384);
+            this.LED2.Name = "LED2";
+            this.LED2.Size = new System.Drawing.Size(50, 50);
+            this.LED2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LED2.TabIndex = 23;
+            this.LED2.TabStop = false;
+            // 
+            // LED3
+            // 
+            this.LED3.BackColor = System.Drawing.Color.White;
+            this.LED3.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
+            this.LED3.Location = new System.Drawing.Point(17, 384);
+            this.LED3.Name = "LED3";
+            this.LED3.Size = new System.Drawing.Size(50, 50);
+            this.LED3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LED3.TabIndex = 24;
+            this.LED3.TabStop = false;
+            // 
             // CPUForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.LED3);
+            this.Controls.Add(this.LED2);
+            this.Controls.Add(this.LED1);
+            this.Controls.Add(this.LED0);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -294,7 +334,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridViewMemory);
-            this.Controls.Add(this.textBoxES);
             this.Controls.Add(this.textBoxFlags);
             this.Controls.Add(this.textBoxACC);
             this.Controls.Add(this.textBoxIR);
@@ -313,6 +352,10 @@
             this.Shown += new System.EventHandler(this.CPUForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMemory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LED3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -328,7 +371,6 @@
         private TextBox textBoxIR;
         private TextBox textBoxACC;
         private TextBox textBoxFlags;
-        private TextBox textBoxES;
         private DataGridView dataGridViewMemory;
         private Label label2;
         private Label label3;
@@ -338,5 +380,9 @@
         private System.Windows.Forms.Timer timer1;
         private Label label7;
         private Label label1;
+        private PictureBox LED0;
+        private PictureBox LED1;
+        private PictureBox LED2;
+        private PictureBox LED3;
     }
 }
