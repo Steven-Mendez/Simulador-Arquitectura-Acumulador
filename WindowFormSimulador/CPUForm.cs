@@ -432,6 +432,12 @@ namespace WindowFormSimulador
                 }
                 return;
             }
+
+            if (text.Contains("HLT"))
+            {
+                timer1.Stop();
+                return;
+            }
         }
     }
 }
