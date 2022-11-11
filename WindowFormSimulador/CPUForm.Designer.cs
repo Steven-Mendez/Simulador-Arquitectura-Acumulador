@@ -50,13 +50,13 @@
             this.LED0 = new System.Windows.Forms.PictureBox();
             this.LED1 = new System.Windows.Forms.PictureBox();
             this.LED2 = new System.Windows.Forms.PictureBox();
-            this.LED3 = new System.Windows.Forms.PictureBox();
+            this.Switch = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMemory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LED0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LED1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LED2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LED3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Switch)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -277,7 +277,7 @@
             // 
             this.LED0.BackColor = System.Drawing.Color.White;
             this.LED0.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
-            this.LED0.Location = new System.Drawing.Point(185, 384);
+            this.LED0.Location = new System.Drawing.Point(186, 384);
             this.LED0.Name = "LED0";
             this.LED0.Size = new System.Drawing.Size(50, 50);
             this.LED0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -306,23 +306,24 @@
             this.LED2.TabIndex = 23;
             this.LED2.TabStop = false;
             // 
-            // LED3
+            // Switch
             // 
-            this.LED3.BackColor = System.Drawing.Color.White;
-            this.LED3.Image = global::WindowFormSimulador.Properties.Resources.green_led_off_hi;
-            this.LED3.Location = new System.Drawing.Point(17, 384);
-            this.LED3.Name = "LED3";
-            this.LED3.Size = new System.Drawing.Size(50, 50);
-            this.LED3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LED3.TabIndex = 24;
-            this.LED3.TabStop = false;
+            this.Switch.BackColor = System.Drawing.Color.White;
+            this.Switch.Image = global::WindowFormSimulador.Properties.Resources.switch_off;
+            this.Switch.Location = new System.Drawing.Point(17, 384);
+            this.Switch.Name = "Switch";
+            this.Switch.Size = new System.Drawing.Size(50, 50);
+            this.Switch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Switch.TabIndex = 24;
+            this.Switch.TabStop = false;
+            this.Switch.Click += new System.EventHandler(this.Switch_Click);
             // 
             // CPUForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.LED3);
+            this.Controls.Add(this.Switch);
             this.Controls.Add(this.LED2);
             this.Controls.Add(this.LED1);
             this.Controls.Add(this.LED0);
@@ -355,7 +356,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LED0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LED1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LED2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LED3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Switch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -383,6 +384,6 @@
         private PictureBox LED0;
         private PictureBox LED1;
         private PictureBox LED2;
-        private PictureBox LED3;
+        private PictureBox Switch;
     }
 }

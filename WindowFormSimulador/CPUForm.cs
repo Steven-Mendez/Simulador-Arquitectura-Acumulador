@@ -13,6 +13,7 @@ namespace WindowFormSimulador
         private Dictionary<string, (string, int)> variables;
         private const int MAddress = 0, MType = 3, MValue = 2, MText = 1;
         private bool[] flags = { false, false };
+        private int mySwitch = 0;
 
         public CPUForm(Accumulator compiler)
         {
@@ -87,6 +88,12 @@ namespace WindowFormSimulador
         {
             labelCpu.Focus();
             timer1.Start();
+        }
+
+        private void Switch_Click(object sender, EventArgs e)
+        {
+            Switch.Image = mySwitch == 1 ? Resources.switch_off : Resources.switch_on;
+            mySwitch = mySwitch == 1 ? 0 : 1;
         }
 
         private void CPUForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -434,6 +441,16 @@ namespace WindowFormSimulador
                 return;
             }
 
+            if (text.Contains("IN"))
+            {
+                // MDR now its containing the value
+                textBoxMDR.Text = Convert.ToUInt32(mySwitch).ToString();
+
+                // Then place it to the ACC
+                textBoxACC.Text = textBoxMDR.Text;
+                return;
+            }
+
             if (text.Contains("OUT"))
             {
                 // MDR now its containing the value
@@ -441,11 +458,11 @@ namespace WindowFormSimulador
 
                 // Then place it to the I/O
                 var IO = Convert.ToString(Convert.ToInt32(textBoxMDR.Text), toBase: 2).PadLeft(4, '0');
-                IO = IO[(IO.Length - 4)..];
-                LED0.Image = IO.Substring(3, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
-                LED1.Image = IO.Substring(2, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
-                LED2.Image = IO.Substring(1, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
-                LED3.Image = IO.Substring(0, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                IO = IO[(IO.Length - 3)..];
+                LED0.Image = IO.Substring(2, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                LED1.Image = IO.Substring(1, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                LED2.Image = IO.Substring(0, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
+                //Switch.Image = IO.Substring(0, 1).Equals("1") ? Resources.green_led_on_hi : Resources.green_led_off_hi;
                 return;
             }
 

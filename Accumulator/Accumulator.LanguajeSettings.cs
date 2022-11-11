@@ -62,6 +62,7 @@ namespace SimulatorAcc
             KeyWords.Add("JZ", new Token(TokenTypes.Jump, "JZ", 37, "B"));
 
             // IO Instruction
+            KeyWords.Add("IN", new Token(TokenTypes.IO, "IN", 124, "IP"));
             KeyWords.Add("OUT", new Token(TokenTypes.IO, "OUT", 125, "OP"));
 
             // Others
@@ -84,6 +85,7 @@ namespace SimulatorAcc
             ParseRules.Add("JT", RuleTypes.UnconditionalJump);
             ParseRules.Add("BT", RuleTypes.conditionalJump);
             ParseRules.Add("OP", RuleTypes.IO);
+            ParseRules.Add("IP", RuleTypes.IO);
             ParseRules.Add("AV", RuleTypes.NotInitStatement);
             ParseRules.Add("AVE", RuleTypes.Statement);
         }
